@@ -25,9 +25,9 @@
 	"SYNONYMS":"Synonyme",
 	"INSERT":"einfügen",
 	"INSERTINPUT":"in Eingabe einfügen",
-	"NGRAMMS":"N-Gramme",
+	"NGRAMMS":"n-Gramme",
 	"ENTRIES":"Einträge",
-	"BUILDNGRAMMS":"N-Gramme erstellen",
+	"BUILDNGRAMMS":"n-Gramme erstellen",
 	"ADDDOCUMENTHINT":"Dokument hinzufügen",
 	"COLLECTIONSHINT":"Vorgegebene Kollektionen",
 	"FAIRYTALES":"Märchen",
@@ -44,14 +44,14 @@
 
   "INPUTTEXTHERE":"Text hier hinein kopieren oder eingeben (max. 20'000 Zeichen)",
   "NUMBEROFSUGGESTIONS":"Anzahl ausgewählter Wortvorschläge",
-  "NUMBEROFSUGGESTIONSDESC":"Aus allen Wortvorschlägen werden %NUM% ausgewählt und in der Spalte \"Wortvorschläge\" blau hinterlegt angezeigt. N-Gramme mit hohem N werden bevorzugt ausgewählt.",
+  "NUMBEROFSUGGESTIONSDESC":"Aus allen Wortvorschlägen werden %NUM% ausgewählt und in der Spalte \"Wortvorschläge\" blau hinterlegt angezeigt. n-Gramme mit hohem n werden bevorzugt ausgewählt.",
   "TEMPERATURE":"Temperatur",
   "LOW":"niedrig",
   "HIGH":"hoch",
   "TEMPERATUREDESC":"Bei niedriger Temperatur werden Wortvorschläge ausgewählt, die häufig vorkommen. Je höher die Temperatur ist, umso zufälliger werden die Wortvorschläge ausgewählt.",
 
   "CONTEXT":"Kontext",
-  "CONTEXTDESC":"Stell ein, wie stark der Prompt bei der Wahl von N-Grammen gewichtet werden soll. Je niedriger der Wert, je weniger wird der Prompt in die Antwort einbezogen.",
+  "CONTEXTDESC":"Stell ein, wie stark der Prompt bei der Wahl von n-Grammen gewichtet werden soll. Je niedriger der Wert, je weniger wird der Prompt in die Antwort einbezogen.",
 
   "ASKDELETE":"Wirklich löschen?",
   "ASKLOADNEWCOLLECTION":"Neue Kollektion laden?",
