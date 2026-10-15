@@ -23,6 +23,8 @@
   "TIMESIN": "x in",
   "DOCUMENT": "Document",
   "DOCUMENTS": "Documents",
+  "CORPUSHEADER1": "Corpus (%NUM% Document)",
+  "CORPUSHEADERN": "Corpus (%NUM% Documents)",
   "SIMILARITY": "Similarity",
   "SYNONYMS": "Synonyms",
   "INSERT": "insert",

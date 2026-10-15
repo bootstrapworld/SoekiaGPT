@@ -21,6 +21,8 @@
 	"TIMESIN":"x in",
 	"DOCUMENT":"Dokument",
 	"DOCUMENTS":"Dokumente",
+	"CORPUSHEADER1":"Korpus (%NUM% Dokument)",
+	"CORPUSHEADERN":"Korpus (%NUM% Dokumente)",
 	"SIMILARITY":"Ähnlichkeit",
 	"SYNONYMS":"Synonyme",
 	"INSERT":"einfügen",
