@@ -519,9 +519,9 @@
 
     {
       "name": "default8",
-      "task": "There as an old lady who",
-      "prompt": "There as an old lady who",
-      "promptDefault": "There was an old lady who",
+      "task": "There was an old lady who",
+      "prompt": "There was an old lady who",
+      "promptDefault": "Write me a folk song",
       "documents": [
         {
           "id": "1",
