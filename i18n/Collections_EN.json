@@ -522,6 +522,7 @@
       "task": "There was an old lady who",
       "prompt": "There was an old lady who",
       "promptDefault": "Write me a folk song",
+      "showngram": 1,
       "documents": [
         {
           "id": "1",
