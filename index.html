@@ -2382,10 +2382,19 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
 
   self.getNextWords();
 
+  // true if the corpus contains the single-word token s (e.g. "."), i.e. if it
+  // can ever be matched as context
+  self.corpusHasToken = function(s){
+    if(!self.wordList || !self.wordList[1]) return false;
+    return self.wordList[1].some(function(x){ return x.text == s; });
+  };
+
   self.addNextWord = function(w){
     if(w.text == "\n"){
       if(self.input.length > 0 && self.input[self.input.length-1].text == "\n") return; // only one
-      if(!self.wasMark)
+      // end the sentence before a line break, but only if the corpus uses "." at all:
+      // otherwise the "." matches nothing and wipes out the context
+      if(!self.wasMark && self.corpusHasToken('.'))
         self.input.push({text:'.', token:'.'});
     }
     self.input.push(w);
