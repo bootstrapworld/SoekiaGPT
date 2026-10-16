@@ -3712,7 +3712,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
           if(self.predefined[i].maxNext){
             self.maxNext = self.predefined[i].maxNext;
           }else self.maxNext = 12;
-          if(self.predefined[i].temp){
+          if(self.predefined[i].temp !== undefined){
             self.temp = self.predefined[i].temp;
           }else self.temp = app.defaultTemperature;
           if(self.predefined[i].context){
