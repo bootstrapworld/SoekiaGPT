@@ -1497,7 +1497,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
   if (defaultCollectionName) {
     app.defaultCollection = collectionNames[defaultCollectionName] || defaultCollectionName;
   }
-  app.defaultTemperature = 60;
+  app.defaultTemperature = 0;
   var defaultTemperature = urlParams.get('temp');
   if (defaultTemperature) {
     app.defaultTemperature = Number(defaultTemperature);
