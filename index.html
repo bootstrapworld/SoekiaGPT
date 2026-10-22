@@ -1499,7 +1499,8 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
     oldlady: 'default8',
   };
 
-  app.defaultCollection = 'default';
+  app.fallbackCollection = 'default';
+  app.defaultCollection = 'default8'; // old lady
   var defaultCollectionName = urlParams.get('name');
   if (defaultCollectionName) {
     app.defaultCollection = collectionNames[defaultCollectionName] || defaultCollectionName;
@@ -1571,7 +1572,9 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
         // console.log('setting noconfirm');
         self.noconfirm = true;
       }
-      self.loadPredefined(app.defaultCollection);
+      // not every language has every collection (e.g. old lady is English only)
+      var exists = self.predefined.some(function(p){ return p.name == app.defaultCollection; });
+      self.loadPredefined(exists ? app.defaultCollection : app.fallbackCollection);
     });
 
   }
