@@ -442,8 +442,14 @@
 
                 <md-fab-actions style="position:absolute;top:16px">
 
+                  <md-button aria-label="Oldlady" class="md-fab md-raised md-mini md-accent documentsButton"
+                    ng-click="self.loadPredefined('default8',$event)" style="background:#17b691;margin-top:42px">
+                    <md-tooltip md-direction="left">{{'OLDLADY' | trans}}</md-tooltip>
+                    <img src="./fly.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:24px; height:24px" alt="Fly" />
+                  </md-button>
+
                   <md-button aria-label="Fairy tales" class="md-fab md-raised md-mini md-accent documentsButton"
-                             ng-click="self.loadPredefined('default',$event)" style="background:#17b691;margin-top:42px">
+                             ng-click="self.loadPredefined('default',$event)" style="background:#17b691;">
                     <md-tooltip md-direction="left">{{'FAIRYTALES' | trans}}</md-tooltip>
                     <md-icon class="material-icons" style="color:white">book</md-icon>
                   </md-button>
@@ -453,14 +459,6 @@
                     <md-tooltip md-direction="left">{{'TICTACTOE' | trans}}</md-tooltip>
                     <md-icon class="material-icons" style="color:white">grid_on</md-icon>
                   </md-button>
-
-                  <!--
-                  <md-button aria-label="Wettervorhersage" class="md-fab md-raised md-mini md-accent documentsButton" 
-                             ng-click="self.loadPredefined('default3',$event)" style="background:#17b691">
-                    <md-tooltip md-direction="left">{{'WEATHER' | trans}}</md-tooltip>
-                    <md-icon class="material-icons" style="color:white">cloud_circle</md-icon>
-                  </md-button>
-                  -->
 
                   <md-button aria-label="ABCMusic" class="md-fab md-raised md-mini md-accent documentsButton"
                              ng-click="self.loadPredefined('default4',$event)" style="background:#17b691;">
@@ -492,12 +490,6 @@
                     ng-click="self.loadPredefined('default2',$event)" style="background:#17b691">
                     <md-tooltip md-direction="left">{{'FAIRYTALESOTHERLANG' | trans}}</md-tooltip>
                     <md-icon class="material-icons" style="color:white">wb_iridescent</md-icon>
-                  </md-button>
-
-                  <md-button aria-label="Oldlady" class="md-fab md-raised md-mini md-accent documentsButton"
-                    ng-click="self.loadPredefined('default8',$event)" style="background:#17b691">
-                    <md-tooltip md-direction="left">{{'OLDLADY' | trans}}</md-tooltip>
-                    <img src="./fly.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:24px; height:24px" alt="Fly" />
                   </md-button>
 
                   <!-- end of collections -->
