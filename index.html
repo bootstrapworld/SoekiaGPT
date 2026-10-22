@@ -2366,6 +2366,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
         w.ngram = "ngram1";
         w.percent = self.wordList[1][i].percent;
         w.calc = w.percent;
+        self.wordList[1][i].calc = w.calc; // so the row sorts by its own value
         w.source = self.wordList[1][i].refs;
         if(self.isMark(w.text) && self.wasMark) continue;
         addWord(w,1);              
@@ -3101,7 +3102,8 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
       for(var i=0; i < self.nextSuggestions.length; i++){
         var item = self.sortedMatching.sorted[z];
         if(self.nextSuggestions[i].token == item.tokens[item.tokens.length-1]) {
-          item.calc = self.nextSuggestions[i].calc; // calc value from context
+          // item.calc is already set per n-gram in getNextWords; copying the
+          // suggestion's calc here would give it another n-gram's value
           hasMatch = true;
           break;
         }
@@ -3131,6 +3133,8 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
 
         if(a.percent < b.percent) return 1;
         if(a.percent > b.percent) return -1;
+        // same value: alphabetical by the suggested (last) word, punctuation last
+        return lexSort(a.tokens[a.tokens.length-1], b.tokens[b.tokens.length-1]);
         // if(a.text < b.text) return -1;
         // if(a.text > b.text) return 1;
         // return 0;
