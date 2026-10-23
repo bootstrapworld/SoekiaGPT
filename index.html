@@ -1307,6 +1307,84 @@ body.smallScreen .seeInsideBtn2 {
 .document_24 {background: #40E0D033 !important; }
 .document_25 {background: #9932CC33 !important; }
 .document_26 {background: #FF634733 !important; }
+.document_27 {background: #FF000066 !important; }
+.document_28 {background: #FFA50066 !important; }
+.document_29 {background: #FFFF0066 !important; }
+.document_30 {background: #00800066 !important; }
+.document_31 {background: #0000FF66 !important; }
+.document_32 {background: #4B008266 !important; }
+.document_33 {background: #EE82EE66 !important; }
+.document_34 {background: #80000066 !important; }
+.document_35 {background: #FFC0CB66 !important; }
+.document_36 {background: #FFD70066 !important; }
+.document_37 {background: #80800066 !important; }
+.document_38 {background: #00FF0066 !important; }
+.document_39 {background: #00FFFF66 !important; }
+.document_40 {background: #00008066 !important; }
+.document_41 {background: #80008066 !important; }
+.document_42 {background: #A52A2A66 !important; }
+.document_43 {background: #FF00FF66 !important; }
+.document_44 {background: #00808066 !important; }
+.document_45 {background: #FF149366 !important; }
+.document_46 {background: #7CFC0066 !important; }
+.document_47 {background: #DC143C66 !important; }
+.document_48 {background: #00CED166 !important; }
+.document_49 {background: #8B451366 !important; }
+.document_50 {background: #40E0D066 !important; }
+.document_51 {background: #9932CC66 !important; }
+.document_52 {background: #FF634766 !important; }
+.document_53 {background: #FF000099 !important; }
+.document_54 {background: #FFA50099 !important; }
+.document_55 {background: #FFFF0099 !important; }
+.document_56 {background: #00800099 !important; }
+.document_57 {background: #0000FF99 !important; }
+.document_58 {background: #4B008299 !important; }
+.document_59 {background: #EE82EE99 !important; }
+.document_60 {background: #80000099 !important; }
+.document_61 {background: #FFC0CB99 !important; }
+.document_62 {background: #FFD70099 !important; }
+.document_63 {background: #80800099 !important; }
+.document_64 {background: #00FF0099 !important; }
+.document_65 {background: #00FFFF99 !important; }
+.document_66 {background: #00008099 !important; }
+.document_67 {background: #80008099 !important; }
+.document_68 {background: #A52A2A99 !important; }
+.document_69 {background: #FF00FF99 !important; }
+.document_70 {background: #00808099 !important; }
+.document_71 {background: #FF149399 !important; }
+.document_72 {background: #7CFC0099 !important; }
+.document_73 {background: #DC143C99 !important; }
+.document_74 {background: #00CED199 !important; }
+.document_75 {background: #8B451399 !important; }
+.document_76 {background: #40E0D099 !important; }
+.document_77 {background: #9932CC99 !important; }
+.document_78 {background: #FF634799 !important; }
+.document_79 {background: #FF0000CC !important; }
+.document_80 {background: #FFA500CC !important; }
+.document_81 {background: #FFFF00CC !important; }
+.document_82 {background: #008000CC !important; }
+.document_83 {background: #0000FFCC !important; }
+.document_84 {background: #4B0082CC !important; }
+.document_85 {background: #EE82EECC !important; }
+.document_86 {background: #800000CC !important; }
+.document_87 {background: #FFC0CBCC !important; }
+.document_88 {background: #FFD700CC !important; }
+.document_89 {background: #808000CC !important; }
+.document_90 {background: #00FF00CC !important; }
+.document_91 {background: #00FFFFCC !important; }
+.document_92 {background: #000080CC !important; }
+.document_93 {background: #800080CC !important; }
+.document_94 {background: #A52A2ACC !important; }
+.document_95 {background: #FF00FFCC !important; }
+.document_96 {background: #008080CC !important; }
+.document_97 {background: #FF1493CC !important; }
+.document_98 {background: #7CFC00CC !important; }
+.document_99 {background: #DC143CCC !important; }
+.document_100 {background: #00CED1CC !important; }
+.document_101 {background: #8B4513CC !important; }
+.document_102 {background: #40E0D0CC !important; }
+.document_103 {background: #9932CCCC !important; }
+.document_104 {background: #FF6347CC !important; }
 
 .document_A {background: #FF000033 !important; }
 .document_B {background: #FFA50033 !important; }
@@ -2493,24 +2571,34 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
     self.editDocument(ev,d);
   };
 
+  // Document ids are either numbers (1, 2, 3, ...) or letters (A, B, ..., Z, AA, AB, ...).
+  // A new document continues whichever the existing documents use (letters if there is
+  // nothing to go by), taking the lowest id not yet in use.
   self.getNextDocumentID = function(){
-    var ids = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    var all = [];
-    for(var i=0; i < ids.length; i++){
-      all.push(ids[i]);
-    }
-    for(var i=0; i < ids.length; i++){
-      for(var z=0; z < ids.length; z++){
-        all.push(ids[i]+ids[z]);
-      }
+    var used = {}, numeric = 0, alpha = 0;
+    for (var i=0; i < self.documents.length; i++){
+      var id = String(self.documents[i].id || "").toUpperCase();
+      used[id] = true;
+      if(/^[0-9]+$/.test(id)) numeric++;
+      else if(/^[A-Z]+$/.test(id)) alpha++;
     }
 
-    for (var i=0; i < self.documents.length; i++){
-      var p = all.indexOf(self.documents[i].id);
-      if(p > -1) all.splice(p,1);
+    if(numeric > alpha){
+      var n = 1;
+      while(used[String(n)]) n++;
+      return String(n);
     }
-    if(all.length == 0) return ""; // all slots are full
-    return all[0];
+
+    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    for(var i=0; i < letters.length; i++){
+      if(!used[letters[i]]) return letters[i];
+    }
+    for(var i=0; i < letters.length; i++){
+      for(var z=0; z < letters.length; z++){
+        if(!used[letters[i]+letters[z]]) return letters[i]+letters[z];
+      }
+    }
+    return ""; // all slots are full
   };
   
   self.addDocument = function(text){
