@@ -138,7 +138,7 @@
 
           </div>
 
-          <div ng-if="self.isManualMode && self.input.length > 0" style="padding:0.5em;padding-top:0;padding-right: 0;padding-left:0;user-select:none;-webkit-user-select:none" layout="row">
+          <div ng-if="self.isManualMode" style="padding:0.5em;padding-top:0;padding-right: 0;padding-left:0;user-select:none;-webkit-user-select:none" layout="row">
             <div style="width:100%">
               <div ng-repeat="w in self.nextSuggestions track by $index" style="display:inline-block;text-transform:none;padding:0.5em 0.75em;text-align:center;border-radius:8px;min-width:1em;margin:0.2em;cursor:pointer" ng-click="self.addNextWord(w)" ng-class="w.ngram">
                 {{w.text}}
@@ -170,7 +170,7 @@
               </div>
             </span>
           </div>
-          <div ng-if="self.input.length > 0" layout="row" layout-align="space-between center" style="padding:0.5em;padding-top:0;padding-right: 0;padding-left:0;user-select:none;-webkit-user-select:none">
+          <div layout="row" layout-align="space-between center" style="padding:0.5em;padding-top:0;padding-right: 0;padding-left:0;user-select:none;-webkit-user-select:none">
 
             <!--<md-button ng-if="!self.isManualMode" style="margin:0;text-transform: none;" ng-click="self.isGenerating && !self.isSingleGenerating ? self.pauseGenerating() : self.startGenerating()"><md-icon class="material-icons">{{self.isGenerating ? (self.isSingleGenerating ? 'play_arrow' : 'pause') : 'android'}}</md-icon>
               <span ng-if="self.isGenerating && self.isSingleGenerating">{{'NEXT' | trans}}</span>
@@ -192,10 +192,10 @@
             <span ng-if="self.isGenerating && !self.isSingleGenerating">{{'PAUSE' | trans}}</span>
             </md-button>
 
-            <md-button ng-if="!self.isManualMode && !self.isGenerating" style="margin:0;text-transform: none;" ng-click="self.isGenerating && !self.isSingleGenerating ? self.pauseGenerating() : self.startGenerating()" aria-label="toggle pause">
+            <md-button ng-if="!self.isManualMode && !self.isGenerating" style="margin:0;text-transform: none;" ng-click="self.input.length == 0 ? self.startWithPrompt() : self.startGenerating()" aria-label="toggle pause">
             <md-icon class="material-icons">android</md-icon>
             <span ng-if="self.isGenerating && self.isSingleGenerating">{{'NEXT' | trans}}</span>
-            <span ng-if="!self.isGenerating && !self.isSingleGenerating">{{'AUTOCONTINUE' | trans}}</span>
+            <span ng-if="!self.isGenerating && !self.isSingleGenerating">{{(self.input.length == 0 ? 'STARTAUTO' : 'AUTOCONTINUE') | trans}}</span>
             <span ng-if="self.isGenerating && !self.isSingleGenerating">{{'PAUSE' | trans}}</span>
             </md-button>
 
