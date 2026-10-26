@@ -3791,7 +3791,9 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
       // console.log('self.predefined =', self.predefined);
       for(var i=0; i < self.predefined.length; i++){
         if(self.predefined[i].name == name){
-          self.documents = self.predefined[i].documents;
+          // work on a copy: the documents get edited, added and removed, and the
+          // cached collection must stay as it was loaded
+          self.documents = JSON.parse(JSON.stringify(self.predefined[i].documents));
           if(self.predefined[i].input){
             self.input = JSON.parse(JSON.stringify(self.predefined[i].input));
           }else self.input = [];
