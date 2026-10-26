@@ -3721,13 +3721,13 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
           if(data.maxNext){
             self.maxNext = data.maxNext;
           }else self.maxNext = 12;
-          if(data.temp){
+          if(data.temp !== undefined){
             self.temp = data.temp;
           }else self.temp = app.defaultTemperature;
-          if(data.context){
+          if(data.context !== undefined){
             self.context = data.context;
           }else self.context = 1.0;
-          if(data.nWeight){
+          if(data.nWeight !== undefined){
             self.nWeight = data.nWeight;
           }else self.nWeight = 1.0;
           if(data.ngram){
@@ -3815,10 +3815,10 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
           if(self.predefined[i].temp !== undefined){
             self.temp = self.predefined[i].temp;
           }else self.temp = app.defaultTemperature;
-          if(self.predefined[i].context){
+          if(self.predefined[i].context !== undefined){
             self.context = self.predefined[i].context;
           }else self.context = 1.0;
-          if(self.predefined[i].nWeight){
+          if(self.predefined[i].nWeight !== undefined){
             self.nWeight = self.predefined[i].nWeight;
           }else self.nWeight = 1.0;
           if(self.predefined[i].ngram){
