@@ -76,11 +76,11 @@
         <div style="text-align:center;user-select:none;-webkit-user-select:none"><img src="Soekia.png" style="max-width:50%;margin:1em" draggable="false" alt="Soekia GPT"/></div>
  
         <div style="max-width: 600px;margin-left: auto;margin-right: auto;position: relative; z-index:9;background: #e0e4ff;box-shadow: 0px 1px 4px gray;border-radius: 10px;padding: 10px 25px;">
-          <div ng-show="self.input.length > 0" style="position:relative; margin-bottom:1em;background:transparent;border-radius:8px;padding:1em;" id="TaskBox" ng-if="!self.firstPrompt">
+          <div style="position:relative; margin-bottom:1em;background:transparent;border-radius:8px;padding:1em;" id="TaskBox" ng-if="self.isGenerating && !self.isSingleGenerating">
             {{self.prompt}}
           </div>
 
-          <div id="PromptBox" ng-show="self.input.length == 0" style="position:relative;">
+          <div id="PromptBox" ng-show="!(self.isGenerating && !self.isSingleGenerating)" style="position:relative;">
             <button disabled style="background:transparent;border:0;width:100%;position:relative; margin-bottom:1em;border-radius:8px;padding:1em;box-sizing: border-box; width:100%;padding-right:52px;text-align: left;color: black" >{{(self.promptDefault == '' ? 'Prompt' : self.promptDefault) + ' ...'}}</button>
             <md-button ng-click="self.startWithPrompt()" style="background:white;padding:3x;position: absolute;right: 0;top:0;min-width: 3em;" aria-label="start" ><md-icon class="material-icons" style="color:black">send</md-icon><md-tooltip md-direction="bottom">{{'STARTGEN' | trans}}</md-tooltip></md-button>
           </div>
@@ -114,7 +114,7 @@
             </div>
             </div>
 
-            <div ng-if="self.showMusicPlayer && self.input.length > 0 && !self.isGenerating" style="position: absolute; left: 0px; bottom: 0;">
+            <div ng-if="self.showMusicPlayer && self.input.length > 0 && !(self.isGenerating && !self.isSingleGenerating)" style="position: absolute; left: 0px; bottom: 0;">
               <md-button ng-click="self.playABCMusic($event)" style="text-transform: none;margin:0">
                 <md-icon class="material-icons" style="color:black">music_note</md-icon>
                 <md-icon class="material-icons" style="color:black">play_arrow</md-icon>
@@ -122,7 +122,7 @@
               </md-button>
             </div>
 
-            <div ng-if="self.showTicTacToePlayer && self.input.length > 0 && !self.isGenerating" style="position: absolute; left: 0px; bottom: 0;">
+            <div ng-if="self.showTicTacToePlayer && self.input.length > 0 && !(self.isGenerating && !self.isSingleGenerating)" style="position: absolute; left: 0px; bottom: 0;">
               <md-button ng-click="self.playTicTacToe($event)" style="text-transform: none;margin:0">
                 <md-icon class="material-icons" style="color:black">videocam</md-icon>
                 <md-icon class="material-icons" style="color:black">play_arrow</md-icon>
@@ -130,7 +130,7 @@
               </md-button>
             </div>
 
-            <div ng-if="self.showChessPlayer && self.input.length > 0 && !self.isGenerating" style="position: absolute; left: 0px; bottom: 0;">
+            <div ng-if="self.showChessPlayer && self.input.length > 0 && !(self.isGenerating && !self.isSingleGenerating)" style="position: absolute; left: 0px; bottom: 0;">
               <md-button ng-click="self.playChess($event)" style="text-transform: none;margin:0">
                 <md-icon class="material-icons" style="color:black">videocam</md-icon>
                 <md-icon class="material-icons" style="color:black">play_arrow</md-icon>
@@ -194,12 +194,6 @@
             <span ng-if="self.isGenerating && !self.isSingleGenerating">{{'PAUSE' | trans}}</span>
             </md-button>
 
-            <md-button ng-if="!self.isManualMode && !self.isGenerating" style="margin:0;text-transform: none;" ng-click="self.input.length == 0 ? self.startWithPrompt() : self.startGenerating()" aria-label="toggle pause">
-            <md-icon class="material-icons">android</md-icon>
-            <span ng-if="self.isGenerating && self.isSingleGenerating">{{'NEXT' | trans}}</span>
-            <span ng-if="!self.isGenerating && !self.isSingleGenerating">{{(self.input.length == 0 ? 'STARTAUTO' : 'AUTOCONTINUE') | trans}}</span>
-            <span ng-if="self.isGenerating && !self.isSingleGenerating">{{'PAUSE' | trans}}</span>
-            </md-button>
 
             <md-button ng-if="!self.isManualMode && self.isGenerating && !self.isSingleGenerating" ng-class="{'md-raised md-warn':false}" ng-click="self.isSingleGenerating = !self.isSingleGenerating; self.isFastGenerating = false;" aria-label="Einzelschritt" style="min-width:2em;margin:0;text-transform: none;"><img src="./hdr_weak.png" style="vertical-align: -10px" width="30px" alt="continuous" /><md-tooltip md-direction="bottom">{{'SINGLESTEP' | trans}}</md-tooltip></md-button>
 
@@ -1787,11 +1781,13 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
       w.text = self.promptSplit[i].text;
       self.addNextWord(w);
     }
-    if(self.firstPrompt){
-      self.firstPrompt = false;
-      if(!self.isManualMode)
-        self.startGenerating();
-    }
+    self.firstPrompt = false;
+    // the send button always starts continuous writing
+    self.isManualMode = false;
+    self.isSingleGenerating = false;
+    self.isFastGenerating = false;
+    self.singleSteps = 0;
+    self.startGenerating();
   };
 
   self.getInput = function(){
@@ -2515,7 +2511,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
       self.saveSettings();
       $timeout(function(){
         if(self.input.length == 0){
-          self.isGenerating = false;
+          self.pauseGenerating();
           self.firstPrompt = true;
         }
 
@@ -3495,7 +3491,10 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
     rebuild();
   };
   
-  self.isGenerating = false;
+  // The writing is either running (continuous or fast) or waiting for the reader to
+  // press "Next word" (single step). The panel starts out waiting.
+  self.isGenerating = true;
+  self.isSingleGenerating = true;
   self.wasGenerated = false;
   self.waitAfterGenerating = 0;
   // console.log('initializing generatedWords =', 0);
@@ -3533,6 +3532,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
 
   self.generatingInterval = $interval(function(){
     if(!self.isGenerating) return; // only when self.isGenerating
+    if(self.isSingleGenerating && self.singleSteps != 1) return; // waiting for "Next word"
     if(!self.isFastGenerating){
       if(self.isFastGeneratingWait == 0){
         self.isFastGeneratingWait = 10;
@@ -3653,11 +3653,13 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
     self.isGenerating = true;
     if(self.isSingleGenerating) self.singleSteps = 1;
   };
+  // "Pause": stop writing on its own and wait for the reader (single step)
   self.pauseGenerating = function (){
     // console.log('pauseGenerating');
-    self.isGenerating = false;
+    self.isGenerating = true;
+    self.isSingleGenerating = true;
     self.isFastGenerating = false;
-    self.isSingleGenerating = false;
+    self.singleSteps = 0;
   };
   self.restartGenerating = function(){
     self.wasGenerated = false;
@@ -3763,7 +3765,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
           self.showChessPlayer = false;
 
           self.firstPrompt = true;
-          self.isGenerating = false;
+          self.pauseGenerating();
 
           $timeout(function() {
             self.updateDocuments();
@@ -3851,7 +3853,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
 
           self.promptSplit = null;
           self.firstPrompt = true;
-          self.isGenerating = false;
+          self.pauseGenerating();
 
           self.showMusicPlayer = name == "default4"; // only for abc example
           self.showTicTacToePlayer = name == "default6"; // only for TicTacToe
