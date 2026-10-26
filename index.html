@@ -100,6 +100,7 @@
               <md-tooltip>{{'RESTARTHINT' | trans}}</md-tooltip>
             </md-button>
 
+            <div id="inputText" style="max-height:max(120px, calc(100vh - 460px));overflow-y:auto">
             <div ng-if="self.input.length == 0" style="color:#999;padding: 0.4em 0.3em;padding-top:0">
                 
             </div>
@@ -110,6 +111,7 @@
             </div>
             <div ng-if="self.input.length > 0 && self.isGenerating && !(self.isSingleGenerating && self.singleSteps == 0)" class="input" style="display:inline-block;vertical-align: middle;padding:0.4em 0.3em;padding-right:0;border-radius:8px;background:#f3f3f3;color:black;margin:0em">
               <div id="wave"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            </div>
             </div>
 
             <div ng-if="self.showMusicPlayer && self.input.length > 0 && !self.isGenerating" style="position: absolute; left: 0px; bottom: 0;">
@@ -3509,6 +3511,25 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
 
   self.isFastGenerating = false;
   self.isFastGeneratingWait = 0;
+
+  // The text box has a fixed maximum height and scrolls once the text is longer.
+  // Keep it scrolled down to the newest words as the text grows; if the reader has
+  // scrolled up to look at earlier text, leave the view alone until they scroll back
+  // down to the bottom.
+  $timeout(function(){
+    var scroller = document.getElementById('inputText');
+    if(!scroller) return;
+    var followText = true;
+    scroller.addEventListener('scroll', function(){
+      followText = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 30;
+    });
+    $scope.$watch(function(){ return self.input.length; }, function(now, before){
+      if(now > before && followText){
+        // wait for the new words to be rendered
+        $timeout(function(){ scroller.scrollTop = scroller.scrollHeight; }, 0);
+      }
+    });
+  }, 0);
 
   self.generatingInterval = $interval(function(){
     if(!self.isGenerating) return; // only when self.isGenerating
