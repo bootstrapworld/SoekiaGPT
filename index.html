@@ -82,20 +82,19 @@
 
           <div id="PromptBox" ng-show="!(self.isGenerating && !self.isSingleGenerating)" style="position:relative;">
             <button disabled style="background:transparent;border:0;width:100%;position:relative; margin-bottom:1em;border-radius:8px;padding:1em;box-sizing: border-box; width:100%;padding-right:52px;text-align: left;color: black" >{{(self.promptDefault == '' ? 'Prompt' : self.promptDefault) + ' ...'}}</button>
-            <md-button ng-click="self.startWithPrompt()" style="background:white;padding:3x;position: absolute;right: 0;top:0;min-width: 3em;" aria-label="start" ><md-icon class="material-icons" style="color:black">send</md-icon><md-tooltip md-direction="bottom">{{'STARTGEN' | trans}}</md-tooltip></md-button>
           </div>
           <div id="inputBox" ng-show="true || self.input.length > 0" style="position:relative; margin-bottom:1em;background:#f0f2fc;border-radius:8px;padding:0.6em;min-height:68px;padding-bottom:2.4em" >
 
             <md-button ng-if="self.input.length > 0" class="hideUnselected1" style="position: absolute;bottom:0;right:72px; margin: 0; min-width: 1em;" ng-click="self.showSource = !self.showSource">
-              <md-icon class="material-icons" ng-style="{'color':self.showSource?'black':'#ccc'}">remove_red_eye</md-icon>
+              <span class="uicon" ng-style="{'opacity': self.showSource ? 1 : 0.35}">🔎</span>
               <md-tooltip>{{'SHOWSOURCESHINT' | trans}}</md-tooltip>
             </md-button>
             <md-button ng-if="self.input.length > 0" class="hideUnselected1" style="position: absolute;bottom:0;right:36px; margin: 0; min-width: 1em;" ng-click="self.copyTextToClipboard(null)">
-              <md-icon class="material-icons" style="color:black">content_copy</md-icon>
+              <span class="uicon">📋</span>
               <md-tooltip>{{'COPYTEXTHINT' | trans}}</md-tooltip>
             </md-button>
             <md-button ng-if="self.input.length > 0" class="hideUnselected1" style="position: absolute;bottom:0;right:0; margin: 0; min-width: 1em;" ng-click="self.pauseGenerating();self.generatedWords = 0;self.deleteWord();self.needRecalculateDocumentContext = true;self.getNextWords();self.rebuildMatchList();">
-              <img src="./replay.png" style="vertical-align: -6px" alt="Restart" />
+              <span class="uicon" style="font-size:30px">↺</span>
               <!-- <md-icon class="material-icons" style="color:black">delete_forever</md-icon> -->
               <md-tooltip>{{'RESTARTHINT' | trans}}</md-tooltip>
             </md-button>
@@ -180,31 +179,20 @@
               <span ng-if="self.isGenerating && !self.isSingleGenerating">{{'PAUSE' | trans}}</span>
             </md-button> -->
 
-            <md-button ng-if="!self.isManualMode && self.isGenerating && self.isSingleGenerating" style="margin:0;text-transform: none;" ng-click="self.isGenerating && !self.isSingleGenerating ? self.pauseGenerating() : self.startGenerating()" aria-label="toggle pause">
-            <img src="./step.png" style="vertical-align: -8px" alt="step" />
-            <span ng-if="self.isGenerating && self.isSingleGenerating">{{'NEXT' | trans}}</span>
-            <span ng-if="!self.isGenerating && !self.isSingleGenerating">{{'AUTOCONTINUE' | trans}}</span>
-            <span ng-if="self.isGenerating && !self.isSingleGenerating">{{'PAUSE' | trans}}</span>
+            <!-- Play / Pause: one button that switches, with "Next word" beside it -->
+            <md-button ng-if="!self.isManualMode && self.isSingleGenerating" style="margin:0;text-transform: none;min-width:9.5em" ng-click="self.startWithPrompt()" aria-label="Play">
+              <span class="uicon">▶</span>
+              <span>{{'STARTGEN' | trans}}</span>
             </md-button>
 
-            <md-button ng-if="!self.isManualMode && self.isGenerating && !self.isSingleGenerating" style="margin:0;text-transform: none;" ng-click="self.isGenerating && !self.isSingleGenerating ? self.pauseGenerating() : self.startGenerating()" aria-label="toggle pause">
-            <md-icon class="material-icons">pause</md-icon>
-            <span ng-if="self.isGenerating && self.isSingleGenerating">{{'NEXT' | trans}}</span>
-            <span ng-if="!self.isGenerating && !self.isSingleGenerating">{{'AUTOCONTINUE' | trans}}</span>
-            <span ng-if="self.isGenerating && !self.isSingleGenerating">{{'PAUSE' | trans}}</span>
+            <md-button ng-if="!self.isManualMode && !self.isSingleGenerating" style="margin:0;text-transform: none;min-width:9.5em" ng-click="self.pauseGenerating()" aria-label="Pause">
+              <span class="uicon">⏸</span>
+              <span>{{'PAUSE' | trans}}</span>
             </md-button>
 
-
-            <md-button ng-if="!self.isManualMode && self.isGenerating && !self.isSingleGenerating" ng-class="{'md-raised md-warn':false}" ng-click="self.isSingleGenerating = !self.isSingleGenerating; self.isFastGenerating = false;" aria-label="Einzelschritt" style="min-width:2em;margin:0;text-transform: none;"><img src="./hdr_weak.png" style="vertical-align: -10px" width="30px" alt="continuous" /><md-tooltip md-direction="bottom">{{'SINGLESTEP' | trans}}</md-tooltip></md-button>
-
-            <md-button ng-if="!self.isManualMode && self.isGenerating && self.isSingleGenerating" ng-class="{'md-raised md-warn':false}" ng-click="self.isSingleGenerating = !self.isSingleGenerating; self.isFastGenerating = false;" aria-label="Einzelschritt" style="min-width:2em;margin:0;text-transform: none;"><img src="./hdr_strong.png" style="vertical-align: -10px" width="30px" alt="single step" /><md-tooltip md-direction="bottom">{{'CONTINUOUS' | trans}}</md-tooltip></md-button>
-
-            <md-button ng-if="!self.isManualMode && self.isGenerating && !self.isFastGenerating" ng-class="{'md-raised md-warn':false}" style="min-width:2em;margin:0;text-transform: none;" ng-click="self.isFastGenerating = !self.isFastGenerating; self.isSingleGenerating = false; self.singleSteps = 0;"><img src="fast_forward.png" style="vertical-align: -8px" alt="fast forward" />
-              <md-tooltip md-direction="bottom">{{'FASTER' | trans}}</md-tooltip>
-            </md-button>
-
-            <md-button ng-if="!self.isManualMode && self.isGenerating && self.isFastGenerating" ng-class="{'md-raised md-warn':false}" style="min-width:2em;margin:0;text-transform: none;" ng-click="self.isFastGenerating = !self.isFastGenerating; self.isSingleGenerating = false; self.singleSteps = 0;"><img src="play_arrow.png" style="vertical-align: -8px; alt="standard"/>
-              <md-tooltip md-direction="bottom">{{'SLOWER' | trans}}</md-tooltip>
+            <md-button ng-if="!self.isManualMode" style="margin:0;text-transform: none;" ng-disabled="!self.isSingleGenerating" ng-click="self.startGenerating()" aria-label="Next word">
+              <span class="uicon">⏯</span>
+              <span>{{'NEXT' | trans}}</span>
             </md-button>
 
             <span flex></span>
@@ -1001,6 +989,12 @@ md-icon {
   font-size:100% !important;
   background:rgb(63,81,181);
   color:white;
+}
+.uicon {
+  font-size: 22px;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
 }
 .fa-spin {
   -webkit-animation: fa-spin 1s infinite linear;
