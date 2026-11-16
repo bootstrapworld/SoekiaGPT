@@ -3901,7 +3901,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
   const blackPieces = [ black_k, black_q, black_b, black_n, black_r, black_p ];
 
   self.visualizeChessGame = function(board) {
-    let gameContent = document.getElementById('inputBox').innerText;
+    let gameContent = document.getElementById('inputText').innerText;
 
     function integerizePos(s) {
       let charCodeA = 97;
@@ -4425,7 +4425,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
   };
 
   self.visualizeTicTacToeGame = function(board) {
-    let gameContent = document.getElementById('inputBox').innerText;
+    let gameContent = document.getElementById('inputText').innerText;
     let TIMEBETWEENPLAYS = 1000;
     let gameMoves = gameContent.trim().split(/\s+/);
     function visualizeOneMove() {
@@ -4489,7 +4489,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
           $mdDialog.cancel();
         };
         $timeout(function(){
-          var abcContent = document.getElementById('inputBox').innerText;
+          var abcContent = document.getElementById('inputText').innerText;
 
           var abcOptions = {
             add_classes: true,
@@ -4600,7 +4600,7 @@ function($scope, $mdBottomSheet, $mdSidenav, $mdMedia, $mdDialog, $timeout,$inte
   
 
   self.copyTextToClipboard = function(text){
-    text = text ? text : ((self.task != '' ? self.task+" \n\n" : '')+document.getElementById('inputBox').innerText);
+    text = text ? text : ((self.task != '' ? self.task+" \n\n" : '')+document.getElementById('inputText').innerText);
 
     function fallbackCopyTextToClipboard(text) {
       var textArea = document.createElement("textarea");
